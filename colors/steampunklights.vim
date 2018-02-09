@@ -117,7 +117,7 @@ call s:HL('LineNr Special', s:palette.gen("gray"))
 call s:HL('CursorLineNr', s:palette.gen("burn"))
 call s:HL('String Directory Title', s:palette.gen("blurple"))
 call s:HL('Type', s:palette.gen("banana", "bold"))
-call s:HL('Operator', s:palette.gen("hotpink"))
+call s:HL('Operator Constant', s:palette.gen("hotpink"))
 call s:HL('Cursorline', s:palette.gen("clear", "dimgray"))
 call s:HL('Function', s:palette.gen("coffee"))
 call s:HL('Number Preproc', s:palette.gen("navy"))
@@ -128,6 +128,8 @@ call s:HL('Boolean', s:palette.gen("hotpink", "bold"))
 " }}}
 " Language Spercific {{{
 " ruby {{{
+call s:HL('rubyConstant', s:palette.gen("navy"))
+call s:HL('rubySymbol rubyBlockParameter', s:palette.gen("gray"))
 " }}}
 " python {{{
 " }}}
