@@ -55,6 +55,7 @@ let s:palette.navy       = [67,  '#5f87af']
 let s:palette.teal       = [37,  '#00afaf']
 let s:palette.lightgray  = [246, '#949494']
 let s:palette.gray       = [242, '#6c6c6c']
+let s:palette.midgray    = [240, '#585858']
 let s:palette.dimgray    = [236, '#303030']
 let s:palette.darkgray   = [234, '#1c1c1c']
 let s:palette.white      = [15,  '#ffffff']
@@ -62,12 +63,30 @@ let s:palette.black      = [232, '#080808']
 let s:palette.clear      = ["NONE", "NONE"]
 let s:palette.bg         = ["bg", "bg"]
 " }}}
+function! s:split(higroups)
+   let groups = []
+   for higroup in split(a:higroups)
+      if higroup =~ '\v.+\(.+\)'
+         let base = substitute(higroup, '\v(.+)\(.+\)', '\1', '')
+         let branches = substitute(higroup, '\v.+\((.+)\)', '\1', '')
+
+         call extend(groups, map(split(branches, '|'),
+            \ "base . (v:val == '.' ?  '' : v:val)"))
+      else
+         call add(groups, higroup)
+      endif
+   endfor
+
+   return groups
+endfunction
+
 " highlighting function {{{
 function! s:HL(higroups, hioptions)
+   let higroups = s:split(a:higroups)
 
-   for higroup in split(a:higroups)
+   for higroup in higroups
       let hioptions = a:hioptions
-      
+
       if type(hioptions) == type({})
          let hiparts = ["highlight", higroup]
          if !exists('hioptions["ctermbg"]') || !exists('hioptions["guibg"]')
@@ -94,7 +113,7 @@ call s:HL('Normal Todo CommentTitle', s:palette.gen("white", "black"))
 call s:HL('Keyword Statement', s:palette.gen("lightblue"))
 call s:HL('Identifier', s:palette.gen("chartreuse", "bold"))
 call s:HL('Comment Folded', s:palette.gen("lightgray", "bg"))
-call s:HL('LineNr', s:palette.gen("gray"))
+call s:HL('LineNr Special', s:palette.gen("gray"))
 call s:HL('CursorLineNr', s:palette.gen("burn"))
 call s:HL('String Directory Title', s:palette.gen("blurple"))
 call s:HL('Type', s:palette.gen("banana", "bold"))
@@ -105,6 +124,7 @@ call s:HL('Number Preproc', s:palette.gen("navy"))
 call s:HL('WildMenu PmenuSel', s:palette.gen("bg", "blurple"))
 call s:HL('Statusline Pmenu', s:palette.gen("white", "dimgray"))
 call s:HL('Delimiter', s:palette.gen("clear"))
+call s:HL('Boolean', s:palette.gen("hotpink", "bold"))
 " }}}
 " Language Spercific {{{
 " ruby {{{
@@ -112,27 +132,44 @@ call s:HL('Delimiter', s:palette.gen("clear"))
 " python {{{
 " }}}
 " html/js/css {{{
+call s:HL('jsStorageClass jsFunction jsRegexp(Quantifier|CharClass)',
+   \ s:palette.gen("lightblue"))
+
+if !exists('g:steamlights.tone_it_down') || !g:steamlights.tone_it_down
+   call s:HL('jsVariableDef jsParen(Repeat|IfElse|.)',
+      \ s:palette.gen("chartreuse", "bold"))
+endif
+
+call s:HL('jsGlobalObjects', s:palette.gen("banana", "bold"))
+call s:HL('jsSpecial jsRegexpOr', s:palette.gen("gray"))
+call s:HL('jsVariableDef', s:palette.gen("midgray", "bold"))
+call s:HL('jsFuncCall', s:palette.gen("coffee"))
 call s:HL('htmlItalic', s:palette.gen("lightblue", "italic"))
+call s:HL('htmlBold', s:palette.gen("lightblue", "bold"))
+
+call s:HL('jsExceptions jsGlobalNodeObjects', s:palette.gen("navy", "bold"))
+call s:HL('jsRegexpBoundary', s:palette.gen("burn"))
 " }}}
 " vimscript {{{
 call s:HL('vimCommentTitle', s:palette.gen("white"))
-call s:HL('vimUserFunc vimMapMod vimBracket vimFuncSID', s:palette.gen("coffee"))
+call s:HL('vim(UserFunc|MapMod|Bracket|FuncSID)', s:palette.gen("coffee"))
 call s:HL('vimMapModKey vimNotation', s:palette.gen("blurple"))
 call s:HL('vimContinue', 'Operator')
+call s:HL('vimUserAttrbKey', s:palette.gen("navy"))
 call s:HL('vimOption vimGroupName' , s:palette.gen('hotpink', "bold"))
 "call s:HL('', s:palette.gen(""))
 "call s:HL('', s:palette.gen(""))
 " }}}
 " markdown {{{
-call s:HL('markdownListMarker markdownHeadingDelimiter', s:palette.gen("hotpink"))
-call s:HL('markdownCode markdownCodeDelimiter markdownCodeBlock',
-   \ s:palette.gen("chartreuse", "darkgray"))
+call s:HL('markdown(ListMarker|HeadingDelimiter)', s:palette.gen("hotpink"))
+call s:HL('markdown(Code|CodeDelimiter|CodeBlock)', s:palette.gen("chartreuse", "darkgray"))
+call s:HL('markdownHeadingRule', s:palette.gen("gray"))
 " }}}
 " }}}
 " Plugin Spercific {{{
 " startify {{{
 call s:HL('StartifyNumber', s:palette.gen("hotpink"))
-call s:HL('StartifyHeader', s:palette.gen("lightblue"))
+call s:HL('Startify(Header|Footer)', s:palette.gen("lightblue"))
 call s:HL('StartifySection', s:palette.gen("lightgray"))
 call s:HL('StartifyFile', s:palette.gen("coffee"))
 " }}}
@@ -143,4 +180,4 @@ unlet s:palette
 delfunction s:HL
 
 source $MYVIMRC
-" vim:ts=3:sts=3:sw=3:et
+" vim:ts=3:sts=3:ts=3:et
