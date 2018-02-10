@@ -5,3 +5,7 @@ Currently at it's very early stages yet to fix highlighting for a lot of languag
 Steampunklights is so far non-configurable
 
 Although Steampunklights is at it's early stages it's still usable
+
+# ScreenShot
+
+![Steampunklights](screenshots/screenshot1.png)
