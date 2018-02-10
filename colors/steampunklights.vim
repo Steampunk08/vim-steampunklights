@@ -63,6 +63,8 @@ let s:palette.black      = [232, '#080808']
 let s:palette.clear      = ["NONE", "NONE"]
 let s:palette.bg         = ["bg", "bg"]
 " }}}
+" highlighting function {{{
+" helper {{{
 function! s:split(higroups)
    let groups = []
    for higroup in split(a:higroups)
@@ -79,8 +81,7 @@ function! s:split(higroups)
 
    return groups
 endfunction
-
-" highlighting function {{{
+"}}}
 function! s:HL(higroups, hioptions)
    let higroups = s:split(a:higroups)
 
@@ -134,18 +135,16 @@ call s:HL('rubySymbol rubyBlockParameter', s:palette.gen("gray"))
 " python {{{
 " }}}
 " html/js/css {{{
-call s:HL('jsStorageClass jsFunction jsRegexp(Quantifier|CharClass)',
-   \ s:palette.gen("lightblue"))
+call s:HL('jsStorageClass jsFunction jsRegexp(Quantifier|CharClass)', 'Statement')
 
 if !exists('g:steamlights.tone_it_down') || !g:steamlights.tone_it_down
-   call s:HL('jsVariableDef jsParen(Repeat|IfElse|.)',
-      \ s:palette.gen("chartreuse", "bold"))
+   call s:HL('jsVariableDef jsParen(Repeat|IfElse|.)', 'Identifier')
 endif
 
-call s:HL('jsGlobalObjects', s:palette.gen("banana", "bold"))
+call s:HL('jsGlobalObjects', 'Type')
 call s:HL('jsSpecial jsRegexpOr', s:palette.gen("gray"))
 call s:HL('jsVariableDef', s:palette.gen("midgray", "bold"))
-call s:HL('jsFuncCall', s:palette.gen("coffee"))
+call s:HL('jsFuncCall', 'Function')
 call s:HL('htmlItalic', s:palette.gen("lightblue", "italic"))
 call s:HL('htmlBold', s:palette.gen("lightblue", "bold"))
 
@@ -153,12 +152,12 @@ call s:HL('jsExceptions jsGlobalNodeObjects', s:palette.gen("navy", "bold"))
 call s:HL('jsRegexpBoundary', s:palette.gen("burn"))
 " }}}
 " vimscript {{{
-call s:HL('vimCommentTitle', s:palette.gen("white"))
-call s:HL('vim(UserFunc|MapMod|Bracket|FuncSID)', s:palette.gen("coffee"))
-call s:HL('vimMapModKey vimNotation', s:palette.gen("blurple"))
+call s:HL('vimCommentTitle', 'Normal')
+call s:HL('vim(UserFunc|MapMod|Bracket|FuncSID)', 'Function')
+call s:HL('vimMapModKey vimNotation', 'String')
 call s:HL('vimContinue', 'Operator')
-call s:HL('vimUserAttrbKey', s:palette.gen("navy"))
-call s:HL('vimOption vimGroupName' , s:palette.gen('hotpink', "bold"))
+call s:HL('vimUserAttrbKey', 'Number')
+call s:HL('vimOption vimGroupName' , 'Boolean')
 "call s:HL('', s:palette.gen(""))
 "call s:HL('', s:palette.gen(""))
 " }}}
@@ -167,13 +166,28 @@ call s:HL('markdown(ListMarker|HeadingDelimiter)', s:palette.gen("hotpink"))
 call s:HL('markdown(Code|CodeDelimiter|CodeBlock)', s:palette.gen("chartreuse", "darkgray"))
 call s:HL('markdownHeadingRule', s:palette.gen("gray"))
 " }}}
+" zsh {{{
+call s:HL('zshOption', s:palette.gen("hotpink", "bold"))
+call s:HL('zshFunction', s:palette.gen("coffee"))
+" }}}
+" bash {{{
+call s:HL('shExpr', 'Statement')
+call s:HL('shFunctionOne', 'Function')
+" }}}
+" git config {{{
+call s:HL('gitConfigSection', 'String')
+call s:HL('gitConfigAssignment', 'Normal')
+call s:HL('gitConfigVariable', s:palette.gen("coffee"))
+call s:HL('gitConfigAssignment', 'chartreuse')
+" 'Identifier')
+" }}}
 " }}}
 " Plugin Spercific {{{
 " startify {{{
-call s:HL('StartifyNumber', s:palette.gen("hotpink"))
-call s:HL('Startify(Header|Footer)', s:palette.gen("lightblue"))
-call s:HL('StartifySection', s:palette.gen("lightgray"))
-call s:HL('StartifyFile', s:palette.gen("coffee"))
+call s:HL('StartifyNumber', 'Operator')
+call s:HL('Startify(Header|Footer)', 'Statement')
+call s:HL('StartifySection', 'Comment')
+call s:HL('StartifyFile', 'Function')
 " }}}
 " }}}
 
