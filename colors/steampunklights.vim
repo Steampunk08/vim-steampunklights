@@ -133,6 +133,11 @@ call s:HL('rubyConstant', s:palette.gen("navy"))
 call s:HL('rubySymbol rubyBlockParameter', s:palette.gen("gray"))
 " }}}
 " python {{{
+call s:HL('pythonBuiltin', 'Function')
+" }}}
+" perl {{{
+call s:HL('perlMethod', 'Function')
+call s:HL('perlVarSimpleMember', 'gray')
 " }}}
 " html/js/css {{{
 call s:HL('jsStorageClass jsFunction jsRegexp(Quantifier|CharClass)', 'Statement')
