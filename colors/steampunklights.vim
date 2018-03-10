@@ -16,6 +16,8 @@ endif
 set background=dark
 let colors_name = 'steampunklights'
 
+hi cssNoise ctermfg=242
+hi cssPseudoClassId ctermfg=95
 " FUNCTIONS & PALETTE
 " palette {{{
 let s:palette = {}
@@ -119,25 +121,29 @@ call s:HL('CursorLineNr', s:palette.gen("burn"))
 call s:HL('String Directory Title', s:palette.gen("blurple"))
 call s:HL('Type', s:palette.gen("banana", "bold"))
 call s:HL('Operator Constant', s:palette.gen("hotpink"))
-call s:HL('Cursorline', s:palette.gen("clear", "dimgray"))
+call s:HL('Cursorline', s:palette.gen("clear", "darkgray"))
 call s:HL('Function', s:palette.gen("coffee"))
 call s:HL('Number Preproc', s:palette.gen("navy"))
 call s:HL('WildMenu PmenuSel', s:palette.gen("bg", "blurple"))
 call s:HL('Statusline Pmenu', s:palette.gen("white", "dimgray"))
 call s:HL('Delimiter', s:palette.gen("clear"))
 call s:HL('Boolean', s:palette.gen("hotpink", "bold"))
+call s:HL('Visual', s:palette.gen("clear", "dimgray"))
 " }}}
 " Language Spercific {{{
 " ruby {{{
-call s:HL('rubyConstant', s:palette.gen("navy"))
-call s:HL('rubySymbol rubyBlockParameter', s:palette.gen("gray"))
+call s:HL('rubyConstant', 'PreProc')
+call s:HL('rubySymbol rubyBlockParameter', 'Special')
 " }}}
 " python {{{
 call s:HL('pythonBuiltin', 'Function')
 " }}}
 " perl {{{
-call s:HL('perlMethod', 'Function')
-call s:HL('perlVarSimpleMember', 'gray')
+call s:HL('perl(Method|Statement)', 'Function')
+call s:HL('perlSpecialString', 'String')
+call s:HL('perlVarSimpleMember', 'Special')
+call s:HL('perlPackage(Decl|Ref)', 'Number')
+call s:HL('perlMatchStartEnd', s:palette.gen("midgray", "bold"))
 " }}}
 " html/js/css {{{
 call s:HL('jsStorageClass jsFunction jsRegexp(Quantifier|CharClass)', 'Statement')
@@ -147,11 +153,15 @@ if !exists('g:steamlights.tone_it_down') || !g:steamlights.tone_it_down
 endif
 
 call s:HL('jsGlobalObjects', 'Type')
-call s:HL('jsSpecial jsRegexpOr', s:palette.gen("gray"))
+call s:HL('jsSpecial jsRegexpOr', 'Special')
 call s:HL('jsVariableDef', s:palette.gen("midgray", "bold"))
 call s:HL('jsFuncCall', 'Function')
 call s:HL('htmlItalic', s:palette.gen("lightblue", "italic"))
 call s:HL('htmlBold', s:palette.gen("lightblue", "bold"))
+call s:HL('html(EndTag|Tag)', s:palette.gen("midgray"))
+call s:HL('html(SpecialTagName|TagName)', 'Identifier')
+call s:HL('htmlArg', 'Function')
+call s:HL('jsObjectProp', 'PreProc')
 
 call s:HL('jsExceptions jsGlobalNodeObjects', s:palette.gen("navy", "bold"))
 call s:HL('jsRegexpBoundary', s:palette.gen("burn"))
@@ -163,17 +173,19 @@ call s:HL('vimMapModKey vimNotation', 'String')
 call s:HL('vimContinue', 'Operator')
 call s:HL('vimUserAttrbKey', 'Number')
 call s:HL('vimOption vimGroupName' , 'Boolean')
+call s:HL('vimAutoEvent', s:palette.gen("midgray", "bold"))
 "call s:HL('', s:palette.gen(""))
 "call s:HL('', s:palette.gen(""))
 " }}}
 " markdown {{{
-call s:HL('markdown(ListMarker|HeadingDelimiter)', s:palette.gen("hotpink"))
+call s:HL('markdown(ListMarker|HeadingDelimiter)', 'Constant')
 call s:HL('markdown(Code|CodeDelimiter|CodeBlock)', s:palette.gen("chartreuse", "darkgray"))
-call s:HL('markdownHeadingRule', s:palette.gen("gray"))
+call s:HL('markdown(Url|HeadingRule)', 'Special')
+call s:HL('markdownLinkText', 'PreProc')
 " }}}
 " zsh {{{
-call s:HL('zshOption', s:palette.gen("hotpink", "bold"))
-call s:HL('zshFunction', s:palette.gen("coffee"))
+call s:HL('zshOption', 'Boolean')
+call s:HL('zshFunction', 'Function')
 " }}}
 " bash {{{
 call s:HL('shExpr', 'Statement')
@@ -182,7 +194,7 @@ call s:HL('shFunctionOne', 'Function')
 " git config {{{
 call s:HL('gitConfigSection', 'String')
 call s:HL('gitConfigAssignment', 'Normal')
-call s:HL('gitConfigVariable', s:palette.gen("coffee"))
+call s:HL('gitConfigVariable', 'Function')
 call s:HL('gitConfigAssignment', 'chartreuse')
 " 'Identifier')
 " }}}
@@ -198,6 +210,7 @@ call s:HL('StartifyFile', 'Function')
 
 " CLEAN UP
 unlet s:palette
+delfunction s:split
 delfunction s:HL
 
 source $MYVIMRC
